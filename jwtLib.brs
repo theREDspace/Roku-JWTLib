@@ -110,9 +110,13 @@ function writeJWT(algorithm, header, body, key)
     rsa.SetDigestAlgorithm(right(algorithm, 6))
     signature = rsa.Sign(hashBA)
 
-    resultUrl = base64ToBase64Url(signature.ToBase64String())
+    if Invalid <> signature
+      resultUrl = base64ToBase64Url(signature.ToBase64String())
 
-    return jwtHeaderUrl + "." + jwtBodyUrl + "." + resultUrl
+      return jwtHeaderUrl + "." + jwtBodyUrl + "." + resultUrl
+    else
+      return Invalid
+    end if
   else
     hmac = CreateObject("roHMAC")
     if hmac.setup(algorithm, signature_key) = 0 then
